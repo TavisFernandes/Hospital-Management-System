@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Booking
+{% endblock title %}
+
+{% block body %}
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+
+<div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+    {{message}}
+
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+{% if is_doctor %}
+<h3>Your Availability Slots</h3>
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>Day</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for slot in availability %}
+    <tr>
+      <td>{{ slot.day_of_week }}</td>
+      <td>{{ slot.start_time.strftime('%H:%M') }}</td>
+      <td>{{ slot.end_time.strftime('%H:%M') }}</td>
+      <td>{% if slot.is_available %}Available{% else %}Unavailable{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<hr>
+{% endif %}
+
+<h3>{% if is_doctor %}All Bookings{% else %}Your Bookings{% endif %}</h3>
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">PID</th>
+      <th scope="col">EMAIL</th>
+      <th scope="col">NAME</th>
+      <th scope="col">GENDER</th>
+      <th scope="col">SLOT</th>
+      <th scope="col">DISEASE</th>
+      <th scope="col">DATE</th>
+      <th scope="col">TIME</th>
+      <th scope="col">D.DEPARTMENT</th>
+      <th scope="col">PHONE NUMBER</th>
+      <th scope="col">EDIT</th>
+      <th scope="col">DELETE</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for post in query %}
+    <tr>
+      <th scope="row">{{post.pid}}</th>
+      <td>{{post.email}}</td>
+      <td>{{post.name}}</td>
+      <td>{{post.gender}}</td>
+      <td>{{post.slot}}</td>
+      <td>{{post.disease}}</td>
+      <td>{{post.date}}</td>
+      <td>{{post.time}}</td>
+      <td>{{post.dept}}</td>
+      <td>{{post.number}}</td>
+      {% if is_doctor %}
+      <td><a href="/edit/{{post.pid}}"><button class="btn btn-success">Edit</button></a></td>
+      <td><a href="/delete/{{post.pid}}"><button onclick="return confirm('Are you sure to Delete data');" class="btn btn-success">Delete</button></a></td>
+      {% else %}
+      <td colspan="2"><a href="/cancel/{{post.pid}}"><button onclick="return confirm('Your payment may not be fully refunded. Are you sure you want to cancel?');" class="btn btn-warning">Cancel</button></a></td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if not is_doctor %}
+<h3>Available Doctor Slots</h3>
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th>Doctor</th>
+      <th>Department</th>
+      <th>Day</th>
+      <th>Available Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for slot in availability %}
+    {% set doctor = doctors|selectattr('did', 'equalto', slot.doctor_id)|first %}
+    <tr>
+      <td>{{ doctor.doctorname if doctor else 'Unknown' }}</td>
+      <td>{{ doctor.dept if doctor else 'Unknown' }}</td>
+      <td>{{ slot.day_of_week }}</td>
+      <td>{{ slot.start_time.strftime('%H:%M') }} - {{ slot.end_time.strftime('%H:%M') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock body %}

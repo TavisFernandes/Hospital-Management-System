@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Prescribe Medication
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <h4 class="text-center">Create New Prescription</h4>
+            <br>
+            <form action="/prescribe" method="POST">
+                <div class="form-group">
+                    <label for="patient_email">Patient Email</label>
+                    <input type="email" class="form-control" id="patient_email" name="patient_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="medication">Medication</label>
+                    <input type="text" class="form-control" id="medication" name="medication" required>
+                </div>
+                <div class="form-group">
+                    <label for="dosage">Dosage</label>
+                    <input type="text" class="form-control" id="dosage" name="dosage" required>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Instructions</label>
+                    <textarea class="form-control" id="instructions" name="instructions" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Create Prescription</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+{% endblock body %}

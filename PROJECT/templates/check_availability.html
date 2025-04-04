@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Doctor Availability
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-3">
+    <h3 class="text-center">Dr. {{ doctor.username }}'s Availability</h3>
+    <hr>
+    
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Available Hours</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for day in ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'] %}
+                    {% set slots = availability|selectattr('day_of_week', 'equalto', day)|list %}
+                    <tr>
+                        <td>{{ day }}</td>
+                        <td>
+                            {% if slots %}
+                                {% for slot in slots %}
+                                    {{ slot.start_time.strftime('%H:%M') }} - {{ slot.end_time.strftime('%H:%M') }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <span class="text-muted">Not available</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-center">
+                <a href="{{ url_for('bookings') }}" class="btn btn-primary">Book Appointment</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

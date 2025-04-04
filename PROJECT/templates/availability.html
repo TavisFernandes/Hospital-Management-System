@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Availability
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-3">
+    <h3 class="text-center">Manage Your Availability</h3>
+    <hr>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Set New Availability</h4>
+            <form action="/availability" method="POST">
+                <div class="form-group">
+                    <label for="day">Day of Week</label>
+                    <select class="form-control" id="day" name="day" required>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="start_time">Start Time</label>
+                    <input type="time" class="form-control" id="start_time" name="start_time" required>
+                </div>
+                <div class="form-group">
+                    <label for="end_time">End Time</label>
+                    <input type="time" class="form-control" id="end_time" name="end_time" required>
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="available" name="available" checked>
+                    <label class="form-check-label" for="available">Available</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Availability</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <h4>Current Availability</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for slot in availability %}
+                    <tr>
+                        <td>{{ slot.day_of_week }}</td>
+                        <td>{{ slot.start_time.strftime('%H:%M') }}</td>
+                        <td>{{ slot.end_time.strftime('%H:%M') }}</td>
+                        <td>
+                            {% if slot.is_available %}
+                            <span class="badge badge-success">Available</span>
+                            {% else %}
+                            <span class="badge badge-danger">Unavailable</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}

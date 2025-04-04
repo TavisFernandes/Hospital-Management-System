@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Prescriptions
+{% endblock title %}
+
+{% block body %}
+<div class="container mt-3">
+    <h3 class="text-center">My Prescriptions</h3>
+    <hr>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Medication</th>
+                <th scope="col">Dosage</th>
+                <th scope="col">Instructions</th>
+                {% if current_user.usertype == "Doctor" %}
+                <th scope="col">Patient</th>
+                {% else %}
+                <th scope="col">Doctor</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for prescription in prescriptions %}
+            <tr>
+                <td>{{ prescription.prescription.date_prescribed.strftime('%Y-%m-%d') }}</td>
+                <td>{{ prescription.prescription.medication }}</td>
+                <td>{{ prescription.prescription.dosage }}</td>
+                <td>{{ prescription.prescription.instructions }}</td>
+                {% if current_user.usertype == "Doctor" %}
+                <td>{{ prescription.patient.name if prescription.patient else 'Unknown' }}</td>
+                {% else %}
+                <td>{{ prescription.doctor.username if prescription.doctor else 'Unknown' }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock body %}

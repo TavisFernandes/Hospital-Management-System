@@ -1,0 +1,59 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333; /* Default text color */
+}
+
+img {
+    color: black; /* Set text color in images to black */
+}
+
+/* Modal Popup */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    max-width: 500px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.modal-content .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-content .close:hover {
+    color: black;
+}
+
+.modal-content h3 {
+    color: #d9534f;
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-content ul {
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.modal-content li {
+    padding: 5px 0;
+}
